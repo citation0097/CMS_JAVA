@@ -61,4 +61,57 @@ public class DataBean {
 		}
 		return studentList;
 	}
+	
+	public int updateStudent(StudentBean student) {
+		int rtn = 0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConnection();
+			String sql = "update student_grade set course = ? , grade = ? where student_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, student.getCourse());
+			pstmt.setInt(2, student.getGrade());
+			pstmt.setInt(3, student.getId());
+		}catch(Exception e) {
+			e.printStackTrace();
+			rtn = -1;
+		}finally {
+			if(rs != null) try { rs.close();} catch(SQLException ex) {}
+			if(pstmt !=null) try { pstmt.close();} catch(SQLException ex) {}
+			if(con != null) try { con.close(); } catch(SQLException ex) {}
+		}
+		
+		return rtn;
+	}
+	
+	public int insertStudent(StudentBean student) {
+		int rtn =0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConnection();
+			String sql = "insert into  student_grade (student_id, student_name, course , grade)"
+					+ "values( default, ?,?,?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, student.getCourse());
+			pstmt.setInt(2, student.getGrade());
+			pstmt.setInt(3, student.getId());
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+			rtn = -1;
+		}finally {
+			if(rs != null) try { rs.close();} catch(SQLException ex) {}
+			if(pstmt !=null) try { pstmt.close();} catch(SQLException ex) {}
+			if(con != null) try { con.close(); } catch(SQLException ex) {}
+		}
+		
+		return rtn;
+	}
+	
 }
