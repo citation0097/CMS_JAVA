@@ -113,5 +113,31 @@ public class DataBean {
 		
 		return rtn;
 	}
+
+	public int deleteStudent(int id) {
+		int rtn =0;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConnection();
+			String sql = "DELETE FROM student_grade  WHERE student_id = ?";
+			pstmt.setInt(1, id);
+			pstmt.executeQuery();
+		}catch(Exception e) {
+			e.printStackTrace();
+			rtn = -1;
+		}finally {
+			if(rs != null) try { rs.close();} catch(SQLException ex) {}
+			if(pstmt !=null) try { pstmt.close();} catch(SQLException ex) {}
+			if(con != null) try { con.close(); } catch(SQLException ex) {}
+		}
+		
+		return rtn;
+	}
 	
 }
+
+
